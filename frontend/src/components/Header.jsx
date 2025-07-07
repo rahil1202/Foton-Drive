@@ -27,7 +27,7 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
         const token = localStorage.getItem('token');
         if (!token) throw new Error('No authentication token found');
 
-        const endpoint = `${BASE_URL}/user/my-profile`;
+        const endpoint = `${BASE_URL}/user/profile`;
         const response = await fetch(endpoint, {
           headers: {
             Authorization: `Bearer ${token}`,

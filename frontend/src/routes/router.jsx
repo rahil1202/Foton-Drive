@@ -8,8 +8,8 @@ import Login from '../pages/auth/login';
 import ResetPassword from '../pages/auth/resetPassword';
 import Signup from '../pages/auth/signup';
 import VerifyOtp from '../pages/auth/verifyOtp';
-import DashboardHome from '../pages/dashboard/home';
-import DashboardProfile from '../pages/dashboard/profile';
+import DashboardHome from '../pages/dashboard/Home';
+import DashboardProfile from '../pages/dashboard/Profile';
 import Home from '../pages/home';
 import ProtectedRoute from './protectedRoute';
 

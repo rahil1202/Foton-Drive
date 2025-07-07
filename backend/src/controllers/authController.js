@@ -8,7 +8,7 @@ import {
   sendResetPasswordEmail,
   sendResetPasswordSuccessEmail,
 } from '../services/emailService.js';
-import { generateTokens } from '../utils/tokenutils.js';
+import { generateTokens } from '../utils/tokenUtils.js';
 
 // Register User
 export const register = async (req, res) => {

@@ -6,22 +6,12 @@ import Sidebar from '../components/Sidebar';
 
 const getHeaderProps = pathname => {
   switch (pathname) {
-    case '/dashboard/':
-      return { title: 'Dashboard', description: 'Welcome to your dashboard' };
     case '/dashboard/home':
       return { title: 'Dashboard', description: 'Manage your files and folders' };
     case '/dashboard/profile':
       return { title: 'Profile', description: 'View your account details' };
     case '/dashboard/settings':
       return { title: 'Settings', description: 'Configure your account settings' };
-    case '/new-file':
-      return { title: 'New File', description: 'Create a new file' };
-    case '/new-folder':
-      return { title: 'New Folder', description: 'Create a new folder' };
-    case '/upload-file':
-      return { title: 'Upload File', description: 'Upload a new file' };
-    case '/upload-folder':
-      return { title: 'Upload Folder', description: 'Upload a new folder' };
     default:
       return { title: 'Dashboard', description: '' };
   }
@@ -42,13 +32,9 @@ const DashboardLayout = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div className="flex min-h-screen bg-light-bg dark:bg-dark-bg transition-colors duration-300">
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-      <div
-        className={`flex-1 transition-all duration-300 ${
-          isSidebarOpen && window.innerWidth >= 768 ? 'ml-64' : 'ml-16'
-        }`}
-      >
+      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-20'}`}>
         <Header title={title} description={description} />
         <div className="p-4 sm:p-6">
           <Outlet />

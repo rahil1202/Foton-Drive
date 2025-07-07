@@ -7,8 +7,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import authRoute from './routes/authRoute.js';
+import fileRoute from './routes/fileRoute.js';
+import userRoute from './routes/userRoute.js';
+
 
 dotenv();
+connectDB();
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -24,7 +29,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
-connectDB();
 
 // Home Route
 app.get('/', (req, res) => {
@@ -42,6 +46,8 @@ app.get('/api/v1/health', (req, res) => {
 
 // Routes
 app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/files', fileRoute);
+app.use('/api/v1/user', userRoute);
 
 // Start Server
 app.listen(PORT, () => {
