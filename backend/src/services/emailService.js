@@ -42,10 +42,9 @@ const sendResetPasswordSuccessEmail = async (email, name) => {
   await sendEmail(email, 'Password Reset Successfully', htmlContent);
 };
 
-
 export {
   sendOtpEmail,
   sendRegistrationSuccessEmail,
   sendResetPasswordEmail,
-  sendResetPasswordSuccessEmail, 
+  sendResetPasswordSuccessEmail,
 };

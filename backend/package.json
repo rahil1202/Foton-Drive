@@ -10,7 +10,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
-  "link" : "https://github.com/rahil1202",
+  "link": "https://github.com/rahil1202",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",

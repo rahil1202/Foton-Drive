@@ -17,30 +17,30 @@ export const register = async (req, res) => {
   if (!name || !phoneNumber || !email || !password) {
     return res.status(400).json({ message: 'All fields are required' });
   }
-  
-  try {
 
+  try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email or phone number' });
+      return res
+        .status(400)
+        .json({ message: 'User already exists with this email or phone number' });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-  
+
     const otp = crypto.randomInt(100000, 999999).toString();
     const hashedOtp = await bcrypt.hash(otp, salt);
-    const otpExpires = Date.now() + 15 * 60 * 1000; 
+    const otpExpires = Date.now() + 15 * 60 * 1000;
 
     const newUser = new User({
-        email,
-        password: hashedPassword,
-        name,
-        phoneNumber,
-        otp: hashedOtp,
-        otpExpires,
-      });
-    
+      email,
+      password: hashedPassword,
+      name,
+      phoneNumber,
+      otp: hashedOtp,
+      otpExpires,
+    });
 
     await newUser.save();
 
@@ -48,7 +48,7 @@ export const register = async (req, res) => {
 
     return res.status(201).json({ message: 'Email sent. Please verify your OTP.' });
   } catch (err) {
-    console.error('Error details:', err); 
+    console.error('Error details:', err);
     res.status(500).json({ message: 'Error registering user!', error: err.message || err });
   }
 };
@@ -77,13 +77,16 @@ export const resendRegistrationOtp = async (req, res) => {
     user.otpExpires = otpExpires;
     await user.save();
 
-    await sendOtpEmail(email, 'Confirm Your Registration for The FMS Platform |  Rahil Vahora', `${otp}`);
+    await sendOtpEmail(
+      email,
+      'Confirm Your Registration for The FMS Platform |  Rahil Vahora',
+      `${otp}`
+    );
 
     return res.status(201).json({ message: 'Email sent. Please verify your OTP.' });
   } catch (err) {
-    console.error('Error details:', err); 
-    res.status(500).json({ message: 'Error resending OTP!', error: err.message || err }); 
-
+    console.error('Error details:', err);
+    res.status(500).json({ message: 'Error resending OTP!', error: err.message || err });
   }
 };
 
@@ -96,7 +99,7 @@ export const confirmRegistration = async (req, res) => {
   }
 
   try {
-    const user = (await User.findOne({ email })) ;
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.otpExpires < Date.now()) {
@@ -104,7 +107,7 @@ export const confirmRegistration = async (req, res) => {
     }
 
     const isOtpValid = await bcrypt.compare(otp, user.otp);
-    if (!isOtpValid) {       
+    if (!isOtpValid) {
       return res.status(400).json({ message: 'Invalid OTP. Registration failed.' });
     }
 
@@ -131,7 +134,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = (await User.findOne({ email }));
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     // Validate password
@@ -144,8 +147,8 @@ export const login = async (req, res) => {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict', 
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      sameSite: 'Strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -169,16 +172,16 @@ export const refreshAccessToken = async (req, res) => {
 
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
-    const user = (await User.findById(payload._id))
+    const user = await User.findById(payload._id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const { accessToken, newRefreshToken } = generateTokens(user);
 
     res.cookie('refreshToken', newRefreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({ accessToken });
@@ -194,8 +197,8 @@ export const logout = (req, res) => {
   try {
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'Strict', 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
     });
 
     res.status(200).json({ message: 'Logged out successfully' });
@@ -211,7 +214,7 @@ export const forgotPassword = async (req, res) => {
   if (!email) return res.status(400).json({ message: 'Email is required' });
 
   try {
-    const user = await User.findOne({ email }) 
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const otp = crypto.randomInt(100000, 999999).toString();
@@ -219,10 +222,14 @@ export const forgotPassword = async (req, res) => {
     const hashedOtp = await bcrypt.hash(otp, salt);
 
     user.otp = hashedOtp;
-    user.otpExpires = Date.now() + 15 * 60 * 1000; 
+    user.otpExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    await sendResetPasswordEmail(email, 'Reset Your Password for The FMS Platform |  Rahil Vahora', `${otp}`);
+    await sendResetPasswordEmail(
+      email,
+      'Reset Your Password for The FMS Platform |  Rahil Vahora',
+      `${otp}`
+    );
 
     return res.status(200).json({ message: 'Email sent. Please verify your OTP.' });
   } catch (err) {
@@ -239,7 +246,7 @@ export const verifyOtp = async (req, res) => {
   }
 
   try {
-    const user = (await User.findOne({ email }))
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.otpExpires < Date.now()) {

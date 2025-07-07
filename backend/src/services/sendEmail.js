@@ -1,9 +1,9 @@
 import Nodemailer from 'nodemailer';
 
-const host = process.env.EMAIL_HOST 
+const host = process.env.EMAIL_HOST;
 const port = process.env.EMAIL_PORT;
-const username = process.env.EMAIL_USERNAME 
-const password = process.env.EMAIL_PASSWORD 
+const username = process.env.EMAIL_USERNAME;
+const password = process.env.EMAIL_PASSWORD;
 
 // console.log('Email service initialized with host:', host, 'and port:', port, 'using username:', username, 'and password:', password );
 
@@ -14,15 +14,15 @@ const sendEmail = async (email, subject, htmlContent) => {
       port: port,
       secure: true,
       auth: {
-        user: username, 
-        pass: password, 
+        user: username,
+        pass: password,
       },
       tls: {
-        rejectUnauthorized: false, 
+        rejectUnauthorized: false,
       },
-      debug: true, 
-      connectionTimeout: 30000, 
-      socketTimeout: 30000, 
+      debug: true,
+      connectionTimeout: 30000,
+      socketTimeout: 30000,
     });
     transporter.on('log', (info) => {
       console.log(info.message);
@@ -39,11 +39,9 @@ const sendEmail = async (email, subject, htmlContent) => {
       from: `"Rahil Vahora" <no-reply@theonebranding.com>`, // Better email formatting
       to: email,
       subject: subject,
-      html: htmlContent,      
+      html: htmlContent,
     };
-    // console.log('Mail options:', mailOptions.to, mailOptions.subject, mailOptions.from);
 
-    // eslint-disable-next-line no-unused-vars
     const info = await transporter.sendMail(mailOptions);
     if (!info || !info.response) {
       throw new Error('Email sending failed, no response received', info.message);
