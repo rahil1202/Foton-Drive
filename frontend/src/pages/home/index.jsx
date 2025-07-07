@@ -100,7 +100,7 @@ const Home = () => {
             <div className="flex items-center space-x-2">
               <FolderOpen className="w-8 h-8 text-yellow-500" />
               <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
-                FMS  | File Management System
+                FMS | File Management System
               </h1>
             </div>
 
@@ -112,7 +112,7 @@ const Home = () => {
               <a href="#stats" className="text-gray-300 hover:text-yellow-500 transition">
                 Analytics
               </a>
-              
+
               <a
                 href="/login"
                 className="px-4 py-2 text-white hover:bg-yellow-500 rounded-lg transition"
@@ -190,8 +190,8 @@ const Home = () => {
                   Like Never Before
                 </h1>
                 <p className="mt-6 text-lg sm:text-xl text-gray-300 leading-relaxed">
-                  FMS revolutionizes how you manage documents with AI-powered
-                  organization, enterprise-grade security, and seamless collaboration tools.
+                  FMS revolutionizes how you manage documents with AI-powered organization,
+                  enterprise-grade security, and seamless collaboration tools.
                 </p>
 
                 {/* Feature Pills */}
@@ -399,32 +399,43 @@ const Home = () => {
             <div>
               <h4 className="text-white font-semibold mb-4">Rahil Vahora</h4>
               <div className="space-y-2 text-sm">
-                <a href="https://github.com/rahil1202" target="_blank" className="block hover:text-yellow-500 transition">
+                <a
+                  href="https://github.com/rahil1202"
+                  target="_blank"
+                  className="block hover:text-yellow-500 transition"
+                >
                   Github
                 </a>
-                <a href="https://www.linkedin.com/in/rahil-vahora/"  target="_blank" className="block hover:text-yellow-500 transition">
+                <a
+                  href="https://www.linkedin.com/in/rahil-vahora/"
+                  target="_blank"
+                  className="block hover:text-yellow-500 transition"
+                >
                   LinkedIn
                 </a>
-                <a href="https://x.com/@Rahil_Vahora12" target="_blank" className="block hover:text-yellow-500 transition">
+                <a
+                  href="https://x.com/@Rahil_Vahora12"
+                  target="_blank"
+                  className="block hover:text-yellow-500 transition"
+                >
                   Twitter
                 </a>
-                
               </div>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>© {new Date().getFullYear()} Made with ❤️ by 
-              <a
-                href="https://github.com/rahil1202"
-                className="text-yellow-500 hover:underline"
-              >
-                {" "}Rahil Vahora
-              </a>.
+            <p>
+              © {new Date().getFullYear()} Made with ❤️ by
+              <a href="https://github.com/rahil1202" className="text-yellow-500 hover:underline">
+                {' '}
+                Rahil Vahora
+              </a>
+              .
               <br />
-             This Product is a fictional product created for demonstration purposes.
+              This Product is a fictional product created for demonstration purposes.
               <br />
               All rights reserved.
-            </p>           
+            </p>
           </div>
         </div>
       </footer>

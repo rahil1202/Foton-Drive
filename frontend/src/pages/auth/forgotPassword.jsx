@@ -62,7 +62,7 @@ const ForgotPassword = () => {
     }
   };
 
- return (
+  return (
     <div className="relative flex items-center justify-center min-h-screen bg-light-bg dark:bg-dark-bg transition-colors duration-300">
       <button
         onClick={toggleTheme}

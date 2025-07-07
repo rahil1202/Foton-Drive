@@ -30,10 +30,8 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
         const token = localStorage.getItem('token');
 
         if (!token) throw new Error('No authentication token found');
-       
 
-        const endpoint =
-           `${BASE_URL}/user/my-profile`;
+        const endpoint = `${BASE_URL}/user/my-profile`;
 
         const response = await fetch(endpoint, {
           headers: {
@@ -173,7 +171,6 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
                 <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">
                   {userData.email}
                 </p>
-               
               </div>
               <ul className="py-2 text-sm">
                 <li>

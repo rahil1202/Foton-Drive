@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('_id');
     localStorage.removeItem('email');
 
-    // Clear refresh token from cookies      
+    // Clear refresh token from cookies
 
     // Update state
     setIsAuthenticated(false);

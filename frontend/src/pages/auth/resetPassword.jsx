@@ -8,7 +8,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import API_URL from '../../configs/api';
 import { useTheme } from '../../context/themeContext';
 
-
 const ResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -85,7 +84,7 @@ const ResetPassword = () => {
       });
 
       if (response.ok) {
-        toast.success('Password reset successfully! Redirecting to login...');       
+        toast.success('Password reset successfully! Redirecting to login...');
         setTimeout(() => {
           navigate('/login');
         }, 1500);

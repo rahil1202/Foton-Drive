@@ -18,9 +18,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
- ;
   const { theme, toggleTheme } = useTheme();
-
 
   const validateForm = () => {
     const newErrors = {};
@@ -37,7 +35,6 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    
 
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -85,8 +82,6 @@ const Login = () => {
     });
   };
 
-
-
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-light-bg dark:bg-dark-bg transition-colors duration-300">
       <button
@@ -96,8 +91,6 @@ const Login = () => {
       >
         {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
       </button>
-
-      
 
       <form
         onSubmit={handleSubmit}
@@ -158,8 +151,6 @@ const Login = () => {
         >
           {isLoading ? 'Logging in...' : 'Log In'}
         </button>
-
-       
       </form>
 
       <ToastContainer

@@ -195,9 +195,7 @@ const Signup = () => {
         </div>
 
         <div className="mb-6">
-          <label            
-            className="block text-sm font-medium text-light-text dark:text-dark-text mb-2"
-          >
+          <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
             Phone Number
           </label>
           <input
