@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { File, Folder, Search } from 'lucide-react';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
 import API_URL from '../../configs/api';
@@ -46,14 +46,13 @@ const DashboardHome = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = files.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const filtered = files.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredFiles(filtered);
   }, [searchQuery, files]);
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     setSearchQuery(e.target.value);
   };
 
@@ -83,7 +82,7 @@ const DashboardHome = () => {
                 No files or folders found.
               </p>
             ) : (
-              filteredFiles.map((item) => (
+              filteredFiles.map(item => (
                 <div
                   key={item._id}
                   className="flex items-center gap-3 p-4 bg-light-card dark:bg-dark-card rounded-md shadow-card hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"

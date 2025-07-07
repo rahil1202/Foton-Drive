@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Home, LogOut, Settings, Upload,User2Icon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, LogOut, Settings, Upload, User2Icon } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const navItems = [
     { path: '/dashboard/home', icon: <Home className="w-5 h-5" />, name: 'Home' },
-    { path : '/dashboard/profile', icon: <User2Icon className="w-5 h-5" />, name: 'Profile' },    
+    { path: '/dashboard/profile', icon: <User2Icon className="w-5 h-5" />, name: 'Profile' },
     { path: '/dashboard/settings', icon: <Settings className="w-5 h-5" />, name: 'Settings' },
   ];
 
@@ -101,8 +101,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   title={!isSidebarOpen ? item.name : ''}
                 >
                   {item.icon}
-                  {isSidebarOpen && <span className="text-base">{item.name}</span>}                  
-                </button>                
+                  {isSidebarOpen && <span className="text-base">{item.name}</span>}
+                </button>
               </li>
             ))}
           </ul>

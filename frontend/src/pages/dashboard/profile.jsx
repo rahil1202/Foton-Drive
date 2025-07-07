@@ -1,6 +1,6 @@
 import 'react-toastify/dist/ReactToastify.css';
 
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
 import API_URL from '../../configs/api';
@@ -53,7 +53,6 @@ const Profile = () => {
 
   return (
     <div className={`flex min-h-screen bg-light-bg dark:bg-dark-bg transition-colors duration-300`}>
-     
       <div className="flex-1 p-2">
         {isLoading ? (
           <p className="text-center text-light-text dark:text-dark-text">Loading...</p>

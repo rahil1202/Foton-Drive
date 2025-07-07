@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Moon, Sun } from 'lucide-react';
-import React, {useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -10,7 +10,6 @@ import { useAuth } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
 
 const Login = () => {
-
   useEffect(() => {
     if (localStorage.getItem('token')) {
       toast.info('You are already logged in. Redirecting to dashboard...');
@@ -29,8 +28,6 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  
- 
 
   const validateForm = () => {
     const newErrors = {};

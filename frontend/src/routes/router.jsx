@@ -30,10 +30,10 @@ const AppRouter = () => {
       {/* Protected Dashboard Routes */}
       <Route
         path="/dashboard/*"
-        element={         
+        element={
           <ProtectedRoute>
             <DashboardLayout />
-          </ProtectedRoute>        
+          </ProtectedRoute>
         }
       >
         {/* Nested Routes for Dashboard */}
@@ -41,7 +41,7 @@ const AppRouter = () => {
         <Route path="profile" element={<DashboardProfile />} />
         <Route path="settings" element={<h1>Dashboard Settings</h1>} />
       </Route>
-          
+
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
