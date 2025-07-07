@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { ChevronDown, LogOut, Moon, Settings, Sun } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,19 +19,15 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
     email: 'user@gmail.com',
   });
   const [isLoading, setIsLoading] = useState(true);
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
         const token = localStorage.getItem('token');
-
         if (!token) throw new Error('No authentication token found');
 
         const endpoint = `${BASE_URL}/user/my-profile`;
-
         const response = await fetch(endpoint, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +49,6 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
           email: data.email || 'user@example.com',
         });
       } catch (err) {
-        setError(err.message);
         toast.error(err.message, { position: 'top-right', autoClose: 3000 });
         setUserData({
           username: 'User',
@@ -67,8 +61,7 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
     };
 
     fetchUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [BASE_URL]);
 
   useEffect(() => {
     const handleClickOutside = event => {
@@ -84,23 +77,23 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
   const handleSettings = e => {
     e.stopPropagation();
     setDropdownOpen(false);
-    navigate('/employee/dashboard/settings', { state: { userData } });
+    navigate('/dashboard/settings', { state: { userData } });
   };
 
   const handleLogout = e => {
     e.stopPropagation();
     setDropdownOpen(false);
     logout();
+    navigate('/login');
   };
 
   return (
     <header
       className={twMerge(
-        'w-full px-6 py-5 flex items-center justify-between bg-light-bg dark:bg-dark-card text-light-text dark:text-dark-text shadow-md rounded-xl mb-6 transition-all duration-300',
+        'w-full px-4 sm:px-6 py-5 flex items-center justify-between bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md rounded-xl mb-6 transition-all duration-300',
         className
       )}
     >
-      {/* Title section with subtle animation */}
       <div className="flex items-center gap-3 group">
         {icon && (
           <div className="text-inherit transition-transform duration-300 group-hover:scale-110">
@@ -108,7 +101,7 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold transition-colors duration-300">{title}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold transition-colors duration-300">{title}</h1>
           {description && (
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-300">
               {description}
@@ -117,12 +110,10 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
         </div>
       </div>
 
-      {/* Controls */}
       <div className="flex items-center gap-4 relative">
-        {/* Enhanced Theme toggle with animation */}
         <button
           onClick={toggleTheme}
-          className="p-3 rounded-full bg-light-card dark:bg-dark-card hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
+          className="p-3 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           <div className="relative">
@@ -139,16 +130,15 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
           </div>
         </button>
 
-        {/* Enhanced User dropdown */}
         <div className="relative dropdown-container">
           <button
             onClick={() => setDropdownOpen(prev => !prev)}
-            className="flex items-center gap-3 px-4 py-2 bg-light-card dark:bg-dark-card rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 shadow-sm hover:shadow-md"
+            className="flex items-center gap-3 px-4 py-2 bg-white dark:bg-gray-800 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 shadow-sm hover:shadow-md"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-indigo-600 text-white flex items-center justify-center font-semibold uppercase shadow-inner">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-semibold uppercase shadow-inner">
               {isLoading ? '...' : userData.username.charAt(0)}
             </div>
-            <div className="flex flex-col text-left">
+            <div className="hidden sm:flex flex-col text-left">
               <span className="text-base font-medium transition-colors duration-300">
                 {isLoading ? 'Loading...' : userData.username}
               </span>
@@ -163,10 +153,9 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
             />
           </button>
 
-          {/* Enhanced dropdown menu with animations */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-3 w-72 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-xl shadow-xl z-50 overflow-hidden transition-all duration-300 animate-fadeIn">
-              <div className="px-6 py-5 border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-gray-800">
+            <div className="absolute right-0 mt-3 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl shadow-xl z-50 overflow-hidden transition-all duration-300">
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
                 <p className="text-base font-semibold">{userData.username}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">
                   {userData.email}
@@ -182,7 +171,7 @@ const Header = ({ title = 'Dashboard', description = '', className = '', icon = 
                     <span>Account Settings</span>
                   </button>
                 </li>
-                <li className="border-t border-gray-200 dark:border-dark-border mt-1">
+                <li className="border-t border-gray-200 dark:border-gray-600 mt-1">
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-3 px-6 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 dark:text-red-400 w-full text-left transition-colors duration-200"

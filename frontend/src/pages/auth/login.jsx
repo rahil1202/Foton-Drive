@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Moon, Sun } from 'lucide-react';
-import React, { useState } from 'react';
+import React, {useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -10,6 +10,16 @@ import { useAuth } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
 
 const Login = () => {
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      toast.info('You are already logged in. Redirecting to dashboard...');
+      setTimeout(() => {
+        window.location.href = '/dashboard/home';
+      }, 1500);
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,6 +29,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  
+ 
 
   const validateForm = () => {
     const newErrors = {};
@@ -60,7 +72,7 @@ const Login = () => {
         login(result.token, result._id, result.email);
         toast.success('Login successful! Redirecting to dashboard...');
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/dashboard/home');
         }, 1500);
       } else {
         const errorData = await response.json();
