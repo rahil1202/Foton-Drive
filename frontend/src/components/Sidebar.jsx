@@ -4,16 +4,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '../context/authContext';
+import CreateFolderModal from './CreateFolderModal';
+import UploadFileModal from './UploadFileModal';
 
-const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+const Sidebar = ({
+  isSidebarOpen,
+  setIsSidebarOpen,
+  onOpenUploadFile,
+  onOpenCreateFolder,
+  onItemsUpdated,
+}) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [showUploadFileModal, setShowUploadFileModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleNavigation = path => {
-    setUploadModalOpen(false);
     navigate(path);
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
@@ -125,7 +134,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <button
                 onClick={() => {
                   setUploadModalOpen(false);
-                  navigate('/dashboard/home', { state: { showUploadFile: true } });
+                  setShowUploadFileModal(true);
+                  onOpenUploadFile(); // Notify parent (e.g., App) to sync with Home
                 }}
                 className="px-4 py-2 text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md transition-colors"
               >
@@ -134,7 +144,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <button
                 onClick={() => {
                   setUploadModalOpen(false);
-                  navigate('/dashboard/home', { state: { showCreateFolder: true } });
+                  setShowCreateFolderModal(true);
+                  onOpenCreateFolder(); // Notify parent to sync with Home
                 }}
                 className="px-4 py-2 text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md transition-colors"
               >
@@ -149,6 +160,28 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             </div>
           </div>
         </div>
+      )}
+
+      {showUploadFileModal && (
+        <UploadFileModal
+          currentFolder={null} // Will be passed from Home or parent if needed
+          onClose={() => setShowUploadFileModal(false)}
+          onSuccess={() => {
+            setShowUploadFileModal(false);
+            onItemsUpdated(); // Trigger refresh in Home
+          }}
+        />
+      )}
+
+      {showCreateFolderModal && (
+        <CreateFolderModal
+          currentFolder={null} // Will be passed from Home or parent if needed
+          onClose={() => setShowCreateFolderModal(false)}
+          onSuccess={() => {
+            setShowCreateFolderModal(false);
+            onItemsUpdated(); // Trigger refresh in Home
+          }}
+        />
       )}
 
       {showLogoutModal && (
