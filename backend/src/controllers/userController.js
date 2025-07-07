@@ -2,14 +2,14 @@ import User from '../models/userSchema.js';
 import bcrypt from 'bcrypt';
 
 export const getMyProfile = async (req, res) => {
-
   const userId = req.user._id;
-    if (!userId) {
-        return res.status(400).json({ message: 'User ID is required' });
-    }
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
   try {
-   
-    const user = await User.findById(userId).select('-password -createdAt -updatedAt -otp -otpExpires -isVerified');
+    const user = await User.findById(userId).select(
+      '-password -createdAt -updatedAt -otp -otpExpires -isVerified'
+    );
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -17,7 +17,7 @@ export const getMyProfile = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
-}
+};
 
 export const updateMyProfile = async (req, res) => {
   const userId = req.user._id;

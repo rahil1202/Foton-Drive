@@ -140,18 +140,14 @@ export const getFilesAndFolders = async (req, res) => {
   const limit = parseInt(req.query.limit) || 20;
   const skip = (page - 1) * limit;
   const total = await File.countDocuments({ userId });
-  
 
   try {
-    const items = await File.find({ userId })
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+    const items = await File.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(limit);
 
     if (!items || items.length === 0) {
       return res.status(404).json({ message: 'No files or folders found' });
     }
-    
+
     items.forEach((item) => {
       item.cloudinaryPublicId = undefined;
     });
@@ -164,8 +160,7 @@ export const getFilesAndFolders = async (req, res) => {
       limit,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving files and folders', error:  
-error.message });
+    res.status(500).json({ message: 'Error retrieving files and folders', error: error.message });
   }
 };
 

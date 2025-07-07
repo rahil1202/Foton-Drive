@@ -10,7 +10,6 @@ import authRoute from './routes/authRoute.js';
 import fileRoute from './routes/fileRoute.js';
 import userRoute from './routes/userRoute.js';
 
-
 dotenv();
 connectDB();
 
@@ -28,7 +27,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
-
 
 // Home Route
 app.get('/', (req, res) => {

@@ -23,7 +23,6 @@ router.post('/upload-file', upload.single('file'), uploadFile);
 
 router.post('/create-folder', createFolder);
 
-
 router.get('/search', searchFilesAndFolders);
 
 router.get('/recent', getRecentItems);

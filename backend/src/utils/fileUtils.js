@@ -10,7 +10,7 @@ export const getFileType = (mimeType) => {
     mimeType.includes('officedocument') ||
     mimeType.includes('wordprocessingml') ||
     mimeType.includes('vnd.openxmlformats-officedocument') ||
-    mimeType.includes('vnd.ms-excel') 
+    mimeType.includes('vnd.ms-excel')
   )
     return 'document';
   return 'other';
