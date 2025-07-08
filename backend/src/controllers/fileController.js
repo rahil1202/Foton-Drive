@@ -240,28 +240,35 @@ export const generateShareLink = async (req, res) => {
 // Access shared item
 export const accessSharedItem = async (req, res) => {
   const { id, token } = req.params;
+  const { page = 1, limit = 10 } = req.query; // Pagination for folder contents
 
   if (!id || !token) {
     return res.status(400).json({ message: 'Item ID and token are required' });
   }
 
   try {
-    const item = await File.findById(id).select('-cloudinaryPublicId');
+    const item = await File.findById(id).select(
+      'name type fileType mimeType cloudinaryUrl size parentFolder createdAt shareLink'
+    );
     if (!item) {
       return res.status(404).json({ message: 'Item not found' });
     }
 
     if (!item.shareLink || item.shareLink.token !== token) {
-      return res.status(403).json({ message: 'Invalid or expired share link' });
+      return res.status(403).json({ message: 'Invalid or unauthorized share link' });
     }
 
-    if (item.shareLink.expires && item.shareLink.expires < Date.now()) {
+    if (item.shareLink.expires && item.shareLink.expires < new Date()) {
       return res.status(403).json({ message: 'Share link has expired' });
     }
 
     let contents = [];
     if (item.type === 'folder') {
-      contents = await File.find({ parentFolder: id }).select('-cloudinaryPublicId');
+      contents = await File.find({ parentFolder: id })
+        .select('name type fileType mimeType cloudinaryUrl size createdAt')
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .sort({ createdAt: -1 });
     }
 
     res.status(200).json({
@@ -272,14 +279,26 @@ export const accessSharedItem = async (req, res) => {
         type: item.type,
         fileType: item.fileType,
         mimeType: item.mimeType,
-        url: item.cloudinaryUrl,
+        url: item.cloudinaryUrl, // Consistent field name
         size: item.size,
-        parentFolder: item.parentFolder,
         createdAt: item.createdAt,
-        contents: item.type === 'folder' ? contents : undefined,
+        contents:
+          item.type === 'folder'
+            ? contents.map((c) => ({
+                _id: c._id,
+                name: c.name,
+                type: c.type,
+                fileType: c.fileType,
+                mimeType: c.mimeType,
+                url: c.cloudinaryUrl,
+                size: c.size,
+                createdAt: c.createdAt,
+              }))
+            : undefined,
       },
     });
   } catch (error) {
+    console.error('Error accessing shared item:', error);
     res.status(500).json({ message: 'Error accessing shared item', error: error.message });
   }
 };

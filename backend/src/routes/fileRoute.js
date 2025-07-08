@@ -15,23 +15,21 @@ import verifyToken from '../middleware/verifyToken.js';
 
 const router = express.Router();
 
-router.use(verifyToken);
+router.get('/', verifyToken ,getFilesAndFolders);
 
-router.get('/', getFilesAndFolders);
+router.post('/upload-file', verifyToken, upload.single('file'), uploadFile);
 
-router.post('/upload-file', upload.single('file'), uploadFile);
+router.post('/create-folder', verifyToken, createFolder);
 
-router.post('/create-folder', createFolder);
+router.get('/search', verifyToken, searchFilesAndFolders);
 
-router.get('/search', searchFilesAndFolders);
+router.get('/recent', verifyToken, getRecentItems);
 
-router.get('/recent', getRecentItems);
+router.post('/share/email', verifyToken, shareByEmail);
 
-router.post('/share/email', shareByEmail);
+router.post('/share/link', verifyToken, generateShareLink);
 
-router.post('/share/link', generateShareLink);
-
-router.delete('/:id', deleteItem);
+router.delete('/:id', verifyToken, deleteItem);
 
 router.get('/share/:id/:token', accessSharedItem);
 

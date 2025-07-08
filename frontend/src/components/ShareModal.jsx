@@ -95,11 +95,11 @@ const ShareModal = ({ item, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-light-card dark:bg-dark-card rounded-lg shadow-card p-6 w-full max-w-md ring-1 ring-light-border dark:ring-dark-border">
+      <div className="bg-light-card dark:bg-dark-card rounded-lg shadow-card p-6 w-full max-w-2xl ring-1 ring-light-border dark:ring-dark-border">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-light-text dark:text-dark-text flex items-center gap-2">
+          <h3 className="text-lg text-wrap font-semibold text-light-text dark:text-dark-text flex items-center gap-2">
             <Link className="w-5 h-5 text-blue-500" />
-            Share {item.name}
+            Share {item.name }
           </h3>
           <button
             onClick={onClose}
