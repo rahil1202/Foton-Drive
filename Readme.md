@@ -1,4 +1,3 @@
-````md
 # 📁 File & Media Management System
 
 A modern, full-stack File and Media Management System built for seamless file storage, media uploads, and secure authentication. Designed with a smooth user interface, powerful backend, and essential file system features — all wrapped in a beautifully animated UI.
@@ -81,5 +80,3 @@ Made with 💻 by [Rahil Vahora](mailto:rahilisvahora.com)
 ## 📝 License
 
 This project is open-source and available under the [BSD-2-Clause](LICENSE).
-
-```
