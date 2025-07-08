@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8000;
 
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://adsiduous-assignment-rahil1202.vercel.app'],
-  method: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true,
 };
 

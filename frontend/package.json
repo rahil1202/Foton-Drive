@@ -38,6 +38,8 @@
     "@headlessui/react": "^2.2.0",
     "@tailwindcss/typography": "^0.0.0-insiders.0339c42",
     "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.469.0",
     "react": "^18.0.0",

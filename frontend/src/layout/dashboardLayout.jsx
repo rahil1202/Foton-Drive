@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import Header from '../components/TabHeader';
 
 const getHeaderProps = pathname => {
   switch (pathname) {

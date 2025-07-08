@@ -1,191 +1,153 @@
-import { ChevronDown, LogOut, Moon, Settings, Sun } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { twMerge } from 'tailwind-merge';
+import { ArrowLeft, FolderPlus, Grid, List, Search, Upload, X } from 'lucide-react';
+import React from 'react';
 
-import { useAuth } from '../context/authContext';
-import { useTheme } from '../context/themeContext';
-
-const Header = ({ title = 'Dashboard', description = '', className = '', icon = null }) => {
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-  const { theme, toggleTheme } = useTheme();
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [userData, setUserData] = useState({
-    username: 'User',
-    id: '1236985254',
-    email: 'user@gmail.com',
-  });
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        setIsLoading(true);
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error('No authentication token found');
-
-        const endpoint = `${BASE_URL}/user/profile`;
-        const response = await fetch(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Failed to fetch user data: ${response.status} ${errorText}`);
-        }
-
-        const result = await response.json();
-        const data = result.employee || result.admin || result || {};
-
-        setUserData({
-          username: data.name || data.username || 'User',
-          id: data._id || '',
-          email: data.email || 'user@example.com',
-        });
-      } catch (err) {
-        toast.error(err.message, { position: 'top-right', autoClose: 3000 });
-        setUserData({
-          username: 'User',
-          id: '',
-          email: 'user@example.com',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [BASE_URL]);
-
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (dropdownOpen && !event.target.closest('.dropdown-container')) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [dropdownOpen]);
-
-  const handleSettings = e => {
-    e.stopPropagation();
-    setDropdownOpen(false);
-    navigate('/dashboard/settings', { state: { userData } });
-  };
-
-  const handleLogout = e => {
-    e.stopPropagation();
-    setDropdownOpen(false);
-    logout();
-    navigate('/login');
-  };
-
+const Header = ({
+  currentFolder,
+  itemsLength,
+  searchQuery,
+  setSearchQuery,
+  fileTypeFilter,
+  setFileTypeFilter,
+  viewMode,
+  setViewMode,
+  handleSearch,
+  handleClearSearch,
+  handleNavigateBack,
+  setShowUploadFile,
+  setShowCreateFolder,
+  isSearching,
+}) => {
   return (
-    <header
-      className={twMerge(
-        'w-full px-4 sm:px-6 py-5 flex items-center justify-between bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md rounded-xl mb-6 transition-all duration-300',
-        className
-      )}
-    >
-      <div className="flex items-center gap-3 group">
-        {icon && (
-          <div className="text-inherit transition-transform duration-300 group-hover:scale-110">
-            {icon}
-          </div>
-        )}
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold transition-colors duration-300">{title}</h1>
-          {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-300">
-              {description}
+    <div className="mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-4">
+          {currentFolder && (
+            <button
+              onClick={handleNavigateBack}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back
+            </button>
+          )}
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {currentFolder
+                ? currentFolder.name
+                : searchQuery || fileTypeFilter
+                  ? 'Search Results'
+                  : 'My Files'}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
+              {itemsLength} {itemsLength === 1 ? 'item' : 'items'}
             </p>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center gap-4 relative">
-        <button
-          onClick={toggleTheme}
-          className="p-3 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        >
-          <div className="relative">
-            <Sun
-              className={`w-5 h-5 text-yellow-400 absolute transition-all duration-500 ${
-                theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'
-              }`}
-            />
-            <Moon
-              className={`w-5 h-5 text-indigo-500 transition-all duration-500 ${
-                theme === 'dark' ? 'opacity-0 -rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
-              }`}
-            />
           </div>
-        </button>
+        </div>
 
-        <div className="relative dropdown-container">
-          <button
-            onClick={() => setDropdownOpen(prev => !prev)}
-            className="flex items-center gap-3 px-4 py-2 bg-white dark:bg-gray-800 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 shadow-sm hover:shadow-md"
-          >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-semibold uppercase shadow-inner">
-              {isLoading ? '...' : userData.username.charAt(0)}
+        <div className="flex items-center gap-3">
+          {/* Search and Filter */}
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyPress={e => e.key === 'Enter' && handleSearch()}
+                placeholder="Search files..."
+                className="pl-10 pr-10 py-2 w-64 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+              {(searchQuery || fileTypeFilter) && (
+                <button
+                  onClick={handleClearSearch}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+              {isSearching && (
+                <div className="absolute right-10 top-1/2 transform -translate-y-1/2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                </div>
+              )}
             </div>
-            <div className="hidden sm:flex flex-col text-left">
-              <span className="text-base font-medium transition-colors duration-300">
-                {isLoading ? 'Loading...' : userData.username}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                {userData.email}
-              </span>
-            </div>
-            <ChevronDown
-              className={`w-4 h-4 text-gray-600 dark:text-gray-300 transition-transform duration-300 ${
-                dropdownOpen ? 'rotate-180' : ''
+            <select
+              value={fileTypeFilter}
+              onChange={e => setFileTypeFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            >
+              <option value="">All Types</option>
+              <option value="folder">Folder</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+              <option value="audio">Audio</option>
+              <option value="document">Document</option>
+            </select>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600 p-1">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-md transition-colors ${
+                viewMode === 'grid'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
-            />
-          </button>
+              title="Grid View"
+            >
+              <Grid className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-md transition-colors ${
+                viewMode === 'list'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
+              title="List View"
+            >
+              <List className="w-5 h-5" />
+            </button>
+          </div>
 
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-3 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl shadow-xl z-50 overflow-hidden transition-all duration-300">
-              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
-                <p className="text-base font-semibold">{userData.username}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">
-                  {userData.email}
-                </p>
-              </div>
-              <ul className="py-2 text-sm">
-                <li>
-                  <button
-                    onClick={handleSettings}
-                    className="flex items-center gap-3 px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left transition-colors duration-200"
-                  >
-                    <Settings className="w-5 h-5" />
-                    <span>Account Settings</span>
-                  </button>
-                </li>
-                <li className="border-t border-gray-200 dark:border-gray-600 mt-1">
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-6 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 dark:text-red-400 w-full text-left transition-colors duration-200"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span>Logout</span>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
+          {/* Action Buttons */}
+          <button
+            onClick={() => setShowUploadFile(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors font-medium"
+          >
+            <Upload className="w-5 h-5" />
+            Upload
+          </button>
+          <button
+            onClick={() => setShowCreateFolder(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors font-medium"
+          >
+            <FolderPlus className="w-5 h-5" />
+            New Folder
+          </button>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 

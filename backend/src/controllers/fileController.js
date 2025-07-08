@@ -3,6 +3,8 @@ import User from '../models/userSchema.js';
 import cloudinary from '../config/cloudinary.js';
 import { getFileType } from '../utils/fileUtils.js';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Upload a single file
 export const uploadFile = async (req, res) => {

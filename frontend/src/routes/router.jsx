@@ -10,6 +10,7 @@ import Signup from '../pages/auth/signup';
 import VerifyOtp from '../pages/auth/verifyOtp';
 import DashboardHome from '../pages/dashboard/Home';
 import DashboardProfile from '../pages/dashboard/Profile';
+import Share from '../pages/dashboard/Share';
 import Home from '../pages/home';
 import ProtectedRoute from './protectedRoute';
 
@@ -41,7 +42,7 @@ const AppRouter = () => {
         <Route path="profile" element={<DashboardProfile />} />
         <Route path="settings" element={<h1>Dashboard Settings</h1>} />
       </Route>
-
+      <Route path="/share/:id/:token" element={<Share />} />
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
