@@ -6,8 +6,8 @@ A modern, full-stack File and Media Management System built for seamless file st
 
 ## 🌐 Live Links
 
-- 🔗 **Frontend:** [adsiduous-assignment-rahil1202.vercel.app](https://adsiduous-assignment-rahil1202.vercel.app/)
-- 🔗 **Backend API:** [adsiduous-assignment.onrender.com](https://adsiduous-assignment.onrender.com/)
+- 🔗 **Frontend:** [foton-drive.vercel.app](https://foton-drive.vercel.app/)
+- 🔗 **Backend API:** [foton-drive.onrender.com](https://foton-drive.onrender.com/)
 
 ---
 
@@ -80,3 +80,4 @@ Made with 💻 by [Rahil Vahora](mailto:rahilisvahora.com)
 ## 📝 License
 
 This project is open-source and available under the [BSD-2-Clause](LICENSE).
+
